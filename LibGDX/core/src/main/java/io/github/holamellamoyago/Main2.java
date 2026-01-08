@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.Random;
@@ -13,7 +12,7 @@ import java.util.Random;
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
  */
-public class Main extends ApplicationAdapter {
+public class Main2 extends ApplicationAdapter {
     private Random rdm;
     private SpriteBatch batch;
     private Texture image;
@@ -46,8 +45,6 @@ public class Main extends ApplicationAdapter {
 
 
         batch.begin();
-
-        System.out.println(Gdx.graphics.getDeltaTime());
 
 
         if (adelante) {
