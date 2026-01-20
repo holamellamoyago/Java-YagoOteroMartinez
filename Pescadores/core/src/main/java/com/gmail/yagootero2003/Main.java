@@ -1,56 +1,60 @@
 package com.gmail.yagootero2003;
 
-import static sun.jvm.hotspot.runtime.BasicObjectLock.size;
-
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.gmail.yagootero2003.clases.Pez;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
-    private SpriteBatch batch;
+    private SpriteBatch sb;
     private Texture image;
-    private List<Pez> peces;
+    OrthographicCamera camara;
+
 
     @Override
     public void create() {
-        Assets.cargarTexturas();
-        batch = new SpriteBatch();
-        peces = new ArrayList<Pez>();
+        camara = new OrthographicCamera();
+        sb = new SpriteBatch();
 
-        peces.add(new Pez(Assets.pezAzul));
+
+
+        Assets.cargarTexturas();
+        Mundo.peces.add(new Pez(Assets.pezAzul));
     }
+
+    @Override public void resize(int width, int height) {
+        camara.setToOrtho(false, Mundo.ANCHO,Mundo.ALTO);
+        camara.update();
+        sb.setProjectionMatrix(camara.combined); // SpriteBatch
+        //sr.setProjectionMatrix(camara.combined); // ShapeRenderer
+    }
+
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
+        ScreenUtils.clear(1,1,1,1);
 
-        dibujarPersonajes();
+        sb.begin();
+
+        sb.draw(Assets.pescador, );
+        sb.draw(Assets.fondo,0,0, Mundo.ANCHO, Mundo.ALTO);
+
+        Mundo.actualizarPersonajes();
+        Mundo.dibujarPersonajes(sb);
         //batch.draw(Assets.pezAzul, 0 , 0);
 
-        batch.end();
+        sb.end();
+
     }
 
-    private void dibujarPersonajes() {
-//        for (int i = peces.size(); i > 0 ; i--) {
-//            peces.get(i).dibujar(batch);
-//        }
 
-        for (int i = 0; i < peces.size(); i++) {
-            peces.get(i).dibujar(batch);
-        }
-    }
 
     @Override
     public void dispose() {
-        batch.dispose();
-        image.dispose();
+        sb.dispose();
     }
 }

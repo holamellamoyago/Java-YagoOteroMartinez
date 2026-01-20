@@ -2,11 +2,11 @@ package com.gmail.yagootero2003.clases;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.gmail.yagootero2003.Screen;
+import com.gmail.yagootero2003.Mundo;
 
 public class Pez {
     private TextureRegion textureRegion;
-    private float MEDIDA_ANCHO, MEDIDA_ALTO, POSICION_X, POSICION_Y;
+    private float medidaAncho, medidaAlto, posicionX, posicionY;
     private final int VELOCIDAD = 4;
     private boolean yendoDerecha;
 
@@ -14,42 +14,50 @@ public class Pez {
         this.textureRegion = texture;
 
         // Medidas, 20% de alto , 25% de ancho
-        MEDIDA_ALTO = 20 * Screen.SCREEN_HEIGH / 100;
-        MEDIDA_ANCHO = 25 * Screen.SCREEN_WIDTH / 100;
+        medidaAlto = 20 * Mundo.ANCHO / 100;
+        medidaAncho = 25 * Mundo.ALTO / 100;
 
         // Posicion X, empieza a la drch -> izq
-        POSICION_X = Screen.SCREEN_WIDTH + textureRegion.getRegionX();
+        posicionX = Mundo.ALTO + textureRegion.getRegionX();
         //POSICION_X = 0;
 
         // Posición Y
         //POSICION_Y = Screen.SCREEN_HEIGH - textureRegion.getRegionY();
-        POSICION_Y = 0;
+        posicionY = 0;
 
         // Empieza yendo hacia la izquierda
         yendoDerecha = false;
     }
 
-    public void dibujar(Batch batch) {
-
+    public void actualizar() {
         if (yendoDerecha) {
-            //POSICION_X += VELOCIDAD;
+            posicionX += VELOCIDAD;
 
+            System.out.println("\nPOSICION X: " + posicionX);
+            System.out.println("screen width : " + Mundo.ALTO);
+            System.out.println("medida ancho : " + medidaAncho);
 
-//            if (POSICION_X <= (Screen.SCREEN_WIDTH) + MEDIDA_ANCHO) {
-//                yendoDerecha = !yendoDerecha;
-//            }
+            if ((posicionX) >= (Mundo.ALTO + Math.abs(medidaAncho))) {
+                yendoDerecha = !yendoDerecha;
+                medidaAncho = Math.abs(medidaAncho);
+            }
 
         } else {
-            POSICION_X -= VELOCIDAD;
+            posicionX -= VELOCIDAD;
 
-            if (textureRegion.getRegionX() <= 0) {
-                System.out.println("Ahora debería de ir a la derecha");
-                POSICION_X = Screen.SCREEN_WIDTH;
+            if ((posicionX + textureRegion.getRegionWidth()) <= 0) {
+                yendoDerecha = !yendoDerecha;
+                medidaAncho = -Math.abs(medidaAncho);
             }
 
         }
+    }
 
-        batch.draw(textureRegion, POSICION_X, POSICION_Y, MEDIDA_ANCHO, MEDIDA_ALTO);
+    public void dibujar(Batch batch) {
+
+
+
+        batch.draw(textureRegion, posicionX, posicionY, medidaAncho, medidaAlto);
     }
 
 
