@@ -11,10 +11,10 @@ public class Mundo {
     public static final int ANCHO = 480, ALTO = 480;
 
     public static List<Pez> peces = new ArrayList<>();
-    public Pescador pescador = new Pescador();
+    public static Pescador pescador;
 
     public static void actualizarPersonajes() {
-        pescador.
+        pescador.actualizar();
 
 
         for (Pez pez : peces) {
@@ -23,6 +23,7 @@ public class Mundo {
     }
 
     public static void dibujarPersonajes(Batch batch) {
+        pescador.dibujar(batch);
 
         for (Pez pez : peces) {
             pez.dibujar(batch);

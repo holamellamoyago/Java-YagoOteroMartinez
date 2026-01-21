@@ -1,11 +1,14 @@
 package com.gmail.yagootero2003;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.gmail.yagootero2003.clases.EscuchadorTeclado;
+import com.gmail.yagootero2003.clases.Pescador;
 import com.gmail.yagootero2003.clases.Pez;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -20,9 +23,10 @@ public class Main extends ApplicationAdapter {
         camara = new OrthographicCamera();
         sb = new SpriteBatch();
 
-
+        Gdx.input.setInputProcessor(new EscuchadorTeclado());
 
         Assets.cargarTexturas();
+        Mundo.pescador = new Pescador(Assets.pescador);
         Mundo.peces.add(new Pez(Assets.pezAzul));
     }
 
@@ -40,7 +44,6 @@ public class Main extends ApplicationAdapter {
 
         sb.begin();
 
-        sb.draw(Assets.pescador, );
         sb.draw(Assets.fondo,0,0, Mundo.ANCHO, Mundo.ALTO);
 
         Mundo.actualizarPersonajes();
