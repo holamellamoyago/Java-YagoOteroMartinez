@@ -26,6 +26,26 @@ public class EscuchadorTeclado implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+        switch (keycode){
+            case Input.Keys.A: {
+                if (Mundo.pescador.direccion == Direccion.IZQUIERDA) {
+                    Mundo.pescador.direccion = Direccion.PARADO;
+                }
+            } break;
+
+            case Input.Keys.D: {
+                if (Mundo.pescador.direccion == Direccion.DERECHA) {
+                    Mundo.pescador.direccion = Direccion.PARADO;
+                }
+            } break;
+
+            default:{
+
+                break;
+            }
+
+        }
+
         return false;
     }
 
