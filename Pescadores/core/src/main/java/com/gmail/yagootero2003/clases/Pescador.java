@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Pescador {
     private TextureRegion texture;
-    private float medidaAncho, medidaAlto, x, y;
+    public float medidaAncho, medidaAlto, x, y;
     private final int VELOCIDAD = 4;
     public Direccion direccion;
 

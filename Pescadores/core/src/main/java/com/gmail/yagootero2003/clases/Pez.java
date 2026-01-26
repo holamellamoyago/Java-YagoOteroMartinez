@@ -33,9 +33,9 @@ public class Pez {
         if (yendoDerecha) {
             posicionX += VELOCIDAD;
 
-            System.out.println("\nPOSICION X: " + posicionX);
-            System.out.println("screen width : " + Mundo.ALTO);
-            System.out.println("medida ancho : " + medidaAncho);
+//            System.out.println("\nPOSICION X: " + posicionX);
+//            System.out.println("screen width : " + Mundo.ALTO);
+//            System.out.println("medida ancho : " + medidaAncho);
 
             if ((posicionX) >= (Mundo.ALTO + Math.abs(medidaAncho))) {
                 yendoDerecha = !yendoDerecha;

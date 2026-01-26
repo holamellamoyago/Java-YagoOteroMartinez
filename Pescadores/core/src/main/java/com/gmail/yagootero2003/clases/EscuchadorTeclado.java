@@ -10,13 +10,18 @@ public class EscuchadorTeclado implements InputProcessor {
         switch (keycode) {
             case Input.Keys.D:  {
                 Mundo.pescador.direccion = Direccion.DERECHA;
-                System.out.println("Se detecto letra D");
             } break;
 
             case Input.Keys.A:  {
-                System.out.println("Se detecto letra A");
                 Mundo.pescador.direccion = Direccion.IZQUIERDA;
             } break;
+
+            case Input.Keys.S: {
+                Mundo.pescador.direccion = Direccion.OCUPADO;
+                Mundo.anzuelo.direccion = DireccionAnzuelo.BAJANDO;
+            } break;
+
+
 
             default: {}
         };
