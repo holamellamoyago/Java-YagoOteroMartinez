@@ -1,6 +1,7 @@
 package com.gmail.yagootero2003;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,33 +12,40 @@ import com.gmail.yagootero2003.clases.Anzuelo;
 import com.gmail.yagootero2003.clases.EscuchadorTeclado;
 import com.gmail.yagootero2003.clases.Pescador;
 import com.gmail.yagootero2003.clases.Pez;
+import com.gmail.yagootero2003.clases.Sedal;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends ApplicationAdapter {
+public class Main extends Game{
     private SpriteBatch sb;
     private ShapeRenderer sr;
     private Texture image;
     OrthographicCamera camara;
 
 
+
+
+
     @Override
     public void create() {
+        Assets.cargarTexturas();
+
         camara = new OrthographicCamera();
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
 
         Gdx.input.setInputProcessor(new EscuchadorTeclado());
 
-        Assets.cargarTexturas();
         Mundo.pescador = new Pescador(Assets.pescador);
         Mundo.peces.add(new Pez(Assets.pezAzul));
         Mundo.anzuelo = new Anzuelo(Assets.anzuelo);
+        Mundo.sedal = new Sedal(Assets.sedal);
     }
 
     @Override public void resize(int width, int height) {
         camara.setToOrtho(false, Mundo.ANCHO,Mundo.ALTO);
         camara.update();
-        sb.setProjectionMatrix(camara.combined); // SpriteBatch
+        sb.setProjectionMatrix(camara.combined);
+        sr.setProjectionMatrix(camara.combined);
         //sr.setProjectionMatrix(camara.combined); // ShapeRenderer
     }
 
@@ -45,18 +53,19 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(1,1,1,1);
+        float delta = Gdx.graphics.getDeltaTime();
 
+        sr.begin(ShapeRenderer.ShapeType.Line);
         sb.begin();
 
 
         sb.draw(Assets.fondo,0,0, Mundo.ANCHO, Mundo.ALTO);
 
-        Mundo.actualizarPersonajes();
-        Mundo.dibujarPersonajes(sb);
-
-        //batch.draw(Assets.pezAzul, 0 , 0);
+        Mundo.actualizarPersonajes(delta);
+        Mundo.dibujarPersonajes(sb, sr);
 
         sb.end();
+        sr.end();
 
     }
 
@@ -64,6 +73,6 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-        sb.dispose();
+        sb.dispose(); sr.dispose();
     }
 }

@@ -8,43 +8,66 @@ public class EscuchadorTeclado implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
-            case Input.Keys.D:  {
+            case Input.Keys.D: {
+                if (Mundo.anzuelo.direccion == DireccionAnzuelo.SUBIENDO || Mundo.anzuelo.direccion == DireccionAnzuelo.BAJANDO) {
+                    return false;
+                }
                 Mundo.pescador.direccion = Direccion.DERECHA;
-            } break;
+            }
+            break;
 
-            case Input.Keys.A:  {
+            case Input.Keys.A: {
+                if (Mundo.anzuelo.direccion == DireccionAnzuelo.SUBIENDO || Mundo.anzuelo.direccion == DireccionAnzuelo.BAJANDO) {
+                    return false;
+                }
                 Mundo.pescador.direccion = Direccion.IZQUIERDA;
-            } break;
+            }
+            break;
 
             case Input.Keys.S: {
+                if (Mundo.anzuelo.direccion == DireccionAnzuelo.SUBIENDO) {
+                    return false;
+                }
+
                 Mundo.pescador.direccion = Direccion.OCUPADO;
                 Mundo.anzuelo.direccion = DireccionAnzuelo.BAJANDO;
-            } break;
+            }
+            break;
 
 
-
-            default: {}
-        };
+            default: {
+            }
+        }
+        ;
 
         return false;
-    };
+    }
+
+    ;
 
     @Override
     public boolean keyUp(int keycode) {
-        switch (keycode){
+        switch (keycode) {
             case Input.Keys.A: {
                 if (Mundo.pescador.direccion == Direccion.IZQUIERDA) {
                     Mundo.pescador.direccion = Direccion.PARADO;
                 }
-            } break;
+            }
+            break;
 
             case Input.Keys.D: {
                 if (Mundo.pescador.direccion == Direccion.DERECHA) {
                     Mundo.pescador.direccion = Direccion.PARADO;
                 }
-            } break;
+            }
+            break;
 
-            default:{
+            case Input.Keys.S: {
+                if (Mundo.anzuelo.direccion == DireccionAnzuelo.BAJANDO)
+                    Mundo.anzuelo.direccion = DireccionAnzuelo.SUBIENDO;
+            }
+
+            default: {
 
                 break;
             }
