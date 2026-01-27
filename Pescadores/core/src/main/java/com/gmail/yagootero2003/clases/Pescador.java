@@ -20,7 +20,7 @@ public class Pescador extends Personaje {
         ancho = 25 * Pantalla.ALTO / 100;
 
         // Posicion X, empieza a la drch -> izq
-        x = new Random().nextInt(Pantalla.ANCHO);
+        x = new Random().nextInt(Pantalla.ANCHO) - texture.getRegionX();
 
         //POSICION_Y = Screen.SCREEN_HEIGH - textureRegion.getRegionY();
         y = 60 * Pantalla.ALTO / 100;

@@ -1,65 +1,62 @@
 package com.gmail.yagootero2003.clases;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.gmail.yagootero2003.Mundo;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.gmail.yagootero2003.pantallas.Pantalla;
 
-public class Pez {
-    private TextureRegion textureRegion;
-    private float medidaAncho, medidaAlto, posicionX, posicionY;
-    private final int VELOCIDAD = 4;
+// TODO Cambiar a personaje
+public class Pez extends Personaje {
     private boolean yendoDerecha;
 
     public Pez (TextureRegion texture) {
-        this.textureRegion = texture;
+        super(texture);
 
         // Medidas, 20% de alto , 25% de ancho
-        medidaAlto = 20 * Pantalla.ANCHO / 100;
-        medidaAncho = 25 * Pantalla.ALTO / 100;
+        alto = 20 * Pantalla.ANCHO / 100;
+        ancho = 25 * Pantalla.ALTO / 100;
 
         // Posicion X, empieza a la drch -> izq
-        posicionX = Pantalla.ALTO + textureRegion.getRegionX();
+        x = Pantalla.ALTO + texture.getRegionX();
         //POSICION_X = 0;
 
         // Posición Y
         //POSICION_Y = Screen.SCREEN_HEIGH - textureRegion.getRegionY();
-        posicionY = 0;
+        y = 0;
 
         // Empieza yendo hacia la izquierda
         yendoDerecha = false;
     }
 
-    public void actualizar() {
+    @Override
+    public void actualiza(float delta) {
         if (yendoDerecha) {
-            posicionX += VELOCIDAD;
+            x += VELOCIDAD * delta;
 
 //            System.out.println("\nPOSICION X: " + posicionX);
 //            System.out.println("screen width : " + Mundo.ALTO);
 //            System.out.println("medida ancho : " + medidaAncho);
 
-            if ((posicionX) >= (Pantalla.ALTO + Math.abs(medidaAncho))) {
+            if ((x) >= (Pantalla.ALTO + Math.abs(ancho))) {
                 yendoDerecha = !yendoDerecha;
-                medidaAncho = Math.abs(medidaAncho);
+
+                // TODO Flip
+                ancho = Math.abs(ancho);
             }
 
         } else {
-            posicionX -= VELOCIDAD;
+            x -= VELOCIDAD * delta;
 
-            if ((posicionX + textureRegion.getRegionWidth()) <= 0) {
+            if ((x + texture.getRegionWidth()) <= 0) {
                 yendoDerecha = !yendoDerecha;
-                medidaAncho = -Math.abs(medidaAncho);
+                ancho = -Math.abs(ancho);
             }
 
         }
     }
 
-    public void dibujar(Batch batch) {
-
-
-
-        batch.draw(textureRegion, posicionX, posicionY, medidaAncho, medidaAlto);
-    }
-
+    @Override
+    public void dibuja(SpriteBatch sb, ShapeRenderer sr) {sb.draw(texture, x, y, ancho, alto);}
 
 }

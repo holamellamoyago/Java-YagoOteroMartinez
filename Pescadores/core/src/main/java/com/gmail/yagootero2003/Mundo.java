@@ -26,7 +26,7 @@ public class Mundo {
 
 
         for (Pez pez : peces) {
-            pez.actualizar();
+            pez.actualiza(delta);
         }
     }
 
@@ -36,8 +36,12 @@ public class Mundo {
         sedal.dibuja(sb,sr);
 
         for (Pez pez : peces) {
-            pez.dibujar(sb);
+            pez.dibuja(sb, sr);
         }
 
+    }
+
+    public static void mostrarFondo(SpriteBatch sb) {
+        sb.draw(Assets.fondo, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 }

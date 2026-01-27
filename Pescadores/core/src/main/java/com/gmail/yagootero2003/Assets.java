@@ -29,7 +29,7 @@ public class Assets {
 
 		//fuente = new BitmapFont(Gdx.files.internal("fuentes/fuente.fnt"));
 		fuente = new BitmapFont();
-		fuente.getData().setScale(.5f);
+		fuente.getData().setScale(1.5f);
 		fuente.setColor(Color.RED);
 
 		atlas = new TextureAtlas(Gdx.files.internal("graficos/atlas.atlas"));
