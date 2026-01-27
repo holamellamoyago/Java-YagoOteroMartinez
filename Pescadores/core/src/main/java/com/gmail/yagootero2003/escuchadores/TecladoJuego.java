@@ -1,10 +1,12 @@
-package com.gmail.yagootero2003.clases;
+package com.gmail.yagootero2003.escuchadores;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.gmail.yagootero2003.Mundo;
+import com.gmail.yagootero2003.clases.Direccion;
+import com.gmail.yagootero2003.clases.DireccionAnzuelo;
 
-public class EscuchadorTeclado implements InputProcessor {
+public class TecladoJuego implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {

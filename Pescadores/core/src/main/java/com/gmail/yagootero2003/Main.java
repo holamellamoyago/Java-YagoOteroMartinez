@@ -1,78 +1,79 @@
 package com.gmail.yagootero2003;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.gmail.yagootero2003.clases.Anzuelo;
-import com.gmail.yagootero2003.clases.EscuchadorTeclado;
-import com.gmail.yagootero2003.clases.Pescador;
-import com.gmail.yagootero2003.clases.Pez;
-import com.gmail.yagootero2003.clases.Sedal;
+import com.badlogic.gdx.Screen;
+import com.gmail.yagootero2003.pantallas.Pantalla;
+import com.gmail.yagootero2003.pantallas.PantallaInicial;
+import com.gmail.yagootero2003.pantallas.PantallaJuego;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends Game{
-    private SpriteBatch sb;
-    private ShapeRenderer sr;
-    private Texture image;
-    OrthographicCamera camara;
-
-
-
+/**
+ * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
+ */
+public class Main extends Game {
+    public static Pantalla[] pantallas = new Pantalla[2];
+    public static Pantalla pantallaActual;
 
 
     @Override
     public void create() {
         Assets.cargarTexturas();
 
-        camara = new OrthographicCamera();
-        sb = new SpriteBatch();
-        sr = new ShapeRenderer();
+        pantallas[0] = new PantallaInicial();
+        pantallas[1] = new PantallaJuego();
+        pantallaActual = pantallas[0];
 
-        Gdx.input.setInputProcessor(new EscuchadorTeclado());
+        //camara = new OrthographicCamera();
 
-        Mundo.pescador = new Pescador(Assets.pescador);
-        Mundo.peces.add(new Pez(Assets.pezAzul));
-        Mundo.anzuelo = new Anzuelo(Assets.anzuelo);
-        Mundo.sedal = new Sedal(Assets.sedal);
+
+
+
+
     }
 
-    @Override public void resize(int width, int height) {
-        camara.setToOrtho(false, Mundo.ANCHO,Mundo.ALTO);
-        camara.update();
-        sb.setProjectionMatrix(camara.combined);
-        sr.setProjectionMatrix(camara.combined);
-        //sr.setProjectionMatrix(camara.combined); // ShapeRenderer
+    @Override
+    public void resize(int width, int height) {
+        pantallaActual.resize(width, height);
     }
 
 
     @Override
     public void render() {
-        ScreenUtils.clear(1,1,1,1);
-        float delta = Gdx.graphics.getDeltaTime();
+        pantallaActual.render(Gdx.graphics.getDeltaTime());
 
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sb.begin();
+//        ScreenUtils.clear(1, 1, 1, 1);
+//        float delta = Gdx.graphics.getDeltaTime();
+//
+//        setScreen(pantallaActual);
 
-
-        sb.draw(Assets.fondo,0,0, Mundo.ANCHO, Mundo.ALTO);
-
-        Mundo.actualizarPersonajes(delta);
-        Mundo.dibujarPersonajes(sb, sr);
-
-        sb.end();
-        sr.end();
+//        sr.begin(ShapeRenderer.ShapeType.Line);
+//        sb.begin();
+//
+//
+//        //sb.draw(Assets.fondo, 0, 0, Mundo.ANCHO, Mundo.ALTO);
+//
+//        Mundo.actualizarPersonajes(delta);
+//        Mundo.dibujarPersonajes(sb, sr);
+//
+//        sb.end();
+//        sr.end();
 
     }
-
 
 
     @Override
     public void dispose() {
-        sb.dispose(); sr.dispose();
+//        sb.dispose();
+//        sr.dispose();
     }
+
+    public void setScreen (Screen screen) {
+        if (this.screen != null) this.screen.hide();
+        this.screen = screen;
+        if (this.screen != null) {
+            this.screen.show();
+            this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
+    }
+
 }

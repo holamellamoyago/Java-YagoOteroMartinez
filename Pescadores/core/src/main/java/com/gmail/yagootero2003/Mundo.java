@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mundo {
-    public static final int ANCHO = 480, ALTO = 480;
 
     public static List<Pez> peces = new ArrayList<>();
     public static Pescador pescador;

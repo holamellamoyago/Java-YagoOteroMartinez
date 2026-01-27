@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.gmail.yagootero2003.Mundo;
+import com.gmail.yagootero2003.pantallas.Pantalla;
 
 public class Anzuelo extends Personaje {
 
@@ -15,8 +16,8 @@ public class Anzuelo extends Personaje {
         super(texture);
 
         // Medidas, 20% de alto , 25% de ancho
-        alto = 5 * Mundo.ANCHO / 100;
-        ancho = 5 * Mundo.ALTO / 100;
+        alto = 5 * Pantalla.ANCHO / 100;
+        ancho = 5 * Pantalla.ALTO / 100;
 
         // Posicion X, empieza a la drch -> izq
         x = Mundo.pescador.x + Mundo.pescador.ancho;
@@ -24,7 +25,7 @@ public class Anzuelo extends Personaje {
 
         // Posición Y
         //POSICION_Y = Screen.SCREEN_HEIGH - textureRegion.getRegionY();
-        y = 60 * Mundo.ALTO / 100;
+        y = 60 * Pantalla.ALTO / 100;
 
         // Empieza yendo hacia la izquierda
         direccion = DireccionAnzuelo.PARADO;

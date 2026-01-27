@@ -3,6 +3,7 @@ package com.gmail.yagootero2003.clases;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.gmail.yagootero2003.Mundo;
+import com.gmail.yagootero2003.pantallas.Pantalla;
 
 public class Pez {
     private TextureRegion textureRegion;
@@ -14,11 +15,11 @@ public class Pez {
         this.textureRegion = texture;
 
         // Medidas, 20% de alto , 25% de ancho
-        medidaAlto = 20 * Mundo.ANCHO / 100;
-        medidaAncho = 25 * Mundo.ALTO / 100;
+        medidaAlto = 20 * Pantalla.ANCHO / 100;
+        medidaAncho = 25 * Pantalla.ALTO / 100;
 
         // Posicion X, empieza a la drch -> izq
-        posicionX = Mundo.ALTO + textureRegion.getRegionX();
+        posicionX = Pantalla.ALTO + textureRegion.getRegionX();
         //POSICION_X = 0;
 
         // Posición Y
@@ -37,7 +38,7 @@ public class Pez {
 //            System.out.println("screen width : " + Mundo.ALTO);
 //            System.out.println("medida ancho : " + medidaAncho);
 
-            if ((posicionX) >= (Mundo.ALTO + Math.abs(medidaAncho))) {
+            if ((posicionX) >= (Pantalla.ALTO + Math.abs(medidaAncho))) {
                 yendoDerecha = !yendoDerecha;
                 medidaAncho = Math.abs(medidaAncho);
             }
