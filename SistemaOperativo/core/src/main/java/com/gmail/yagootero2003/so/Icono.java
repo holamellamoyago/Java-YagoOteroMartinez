@@ -4,32 +4,36 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.gmail.yagootero2003.so.screens.Escritorio;
+import com.gmail.yagootero2003.so.screens.Pantalla;
 
-import java.awt.Rectangle;
 
 public class Icono {
     private float x, y;
-    private float ANCHO = 100, ALTO = 100;
+    private int ANCHO = 100, ALTO = 100;
     private Texture texture;
 
     private Rectangle hitBox;
 
-    public Icono(String texture) {
+    private Pantalla pantalla;
+
+    public Icono(String texture, Pantalla pantalla) {
         this.texture = new Texture(Gdx.files.internal(texture));
+        this.pantalla = pantalla;
 
         x = calcularX();
         y = calcularY();
-        hitBox = new Rectangle();
+        hitBox = new Rectangle((int) x, (int) y, ANCHO, ALTO);
     }
 
     public void actualizar() {
-
+        hitBox = new Rectangle((int) x, (int) y, ANCHO, ALTO);
     }
 
     public void dibujar(SpriteBatch sb, ShapeRenderer sr) {
         sb.draw(texture, x, y, ANCHO, ALTO);
-        //sr.rect(x,y,ANCHO, ALTO);
+        sr.rect(x,y,ANCHO, ALTO);
     }
 
     private float calcularX() {
@@ -40,7 +44,7 @@ public class Icono {
     }
 
     private float calcularY() {
-        return  texture.getHeight() - 50;
+        return pantalla.alto - ALTO - 50; // Usa la altura de la ventana
     }
 
     public Rectangle getHitBox() {

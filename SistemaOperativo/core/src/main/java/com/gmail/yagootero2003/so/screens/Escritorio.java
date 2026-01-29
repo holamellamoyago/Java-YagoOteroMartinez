@@ -6,36 +6,34 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gmail.yagootero2003.so.Assets;
 import com.gmail.yagootero2003.so.Icono;
+import com.gmail.yagootero2003.so.SistemaOperativo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Escritorio extends Pantalla {
 
-    private final int ANCHO = 1920, ALTO = 1080;
+    //private final int ANCHO = 1920, ALTO = 1080;
     public static ArrayList<Icono> iconos;
+    private SistemaOperativo juego;
 
-    public Escritorio() {
-        super();
+    public Escritorio(SistemaOperativo juego) {
+        this.juego = juego;
 
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
         camara = new OrthographicCamera();
-        ancho = ANCHO;
-        alto = ALTO;
+        ancho = 1920;
+        alto = 1080;
 
         iconos = new ArrayList<>();
-        iconos.add(new Icono("chrome.png"));
-        iconos.add(new Icono("spotify.png"));
-
-
-
-
-
+        iconos.add(new Icono("chrome.png", this));
+        iconos.add(new Icono("spotify.png", this));
 
     }
 
@@ -45,31 +43,31 @@ public class Escritorio extends Pantalla {
     }
 
     @Override
+    public void resize(int width, int height) {
+        camara.setToOrtho(false, ancho, alto);
+        camara.update();
+        sb.setProjectionMatrix(camara.combined); // SpriteBatch
+        sr.setProjectionMatrix(camara.combined);
+    }
+
+    @Override
     public void render(float delta) {
         sr.begin(ShapeRenderer.ShapeType.Line);
         sb.begin();
 
 
+        sb.draw(Assets.fondo, 0, 0, ancho, alto);
+        sb.draw(Assets.barraTareas, 0, 0, ancho, 50);
 
-        sb.draw(Assets.fondo, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        sb.draw(Assets.barraTareas, 0, 0 , Gdx.graphics.getWidth(), 50);
-
-        for (Icono  ico : iconos) {
+        for (Icono ico : iconos) {
             ico.actualizar();
-            ico.dibujar(sb,sr);
+            ico.dibujar(sb, sr);
         }
 
         sb.end();
         sr.end();
     }
 
-    @Override
-    public void resize(int width, int height) {
-        camara.setToOrtho(false, ANCHO, ALTO);
-        camara.update();
-        sb.setProjectionMatrix(camara.combined); // SpriteBatch
-        sr.setProjectionMatrix(camara.combined);
-    }
 
     @Override
     public void pause() {
@@ -87,29 +85,27 @@ public class Escritorio extends Pantalla {
     }
 
     @Override
-    public void dispose() {sb.dispose(); sr.dispose();}
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
+    public void dispose() {
+        sb.dispose();
+        sr.dispose();
     }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        for(Icono ico : iconos) {
-            if (ico.getHitBox().contains(screenX, screenY)) {
+
+
+        Vector3 v3CoordenadasDePantalla = new Vector3(screenX, screenY, 0);
+        Vector3 v3CoordenadasDeMundo = camara.unproject(v3CoordenadasDePantalla);
+
+
+        for (Icono ico : iconos) {
+            System.out.println("Y: "+ v3CoordenadasDeMundo.y);
+
+
+            if (ico.getHitBox().contains(v3CoordenadasDeMundo.x, v3CoordenadasDeMundo.y)) {
                 System.out.println("Icono pulsado");
-            } else{
+            } else {
                 System.out.println("Afuera");
             }
 
@@ -117,28 +113,4 @@ public class Escritorio extends Pantalla {
         return false;
     }
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        return false;
-    }
 }
