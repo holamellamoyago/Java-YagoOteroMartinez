@@ -10,7 +10,7 @@ public abstract class Personaje {
     public TextureRegion texture;
     public float ancho, alto, x, y;
     // TODO Cambiar a general y personal de cada pj
-    protected final int VELOCIDAD = 80;
+    protected final int VELOCIDAD = 160;
     public Direccion direccion;
 
     protected Rectangle hitBox;

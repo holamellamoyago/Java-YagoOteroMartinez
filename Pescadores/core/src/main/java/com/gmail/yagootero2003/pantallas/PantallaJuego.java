@@ -57,6 +57,7 @@ public class PantallaJuego extends  Pantalla implements InputProcessor {
         Mundo.mostrarFondo(sb);
         Mundo.actualizarPersonajes(delta);
         Mundo.dibujarPersonajes(sb,sr);
+        Mundo.comprobarPescadosVivos();
 
         sb.end();
         sr.end();

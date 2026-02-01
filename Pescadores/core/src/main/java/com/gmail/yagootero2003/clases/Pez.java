@@ -4,13 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.gmail.yagootero2003.Mundo;
 import com.gmail.yagootero2003.pantallas.Pantalla;
+
+import java.awt.Rectangle;
 
 // TODO Cambiar a personaje
 public class Pez extends Personaje {
     private boolean yendoDerecha;
 
-    public Pez (TextureRegion texture) {
+    public Pez(TextureRegion texture) {
         super(texture);
 
         // Medidas, 20% de alto , 25% de ancho
@@ -19,24 +22,26 @@ public class Pez extends Personaje {
 
         // Posicion X, empieza a la drch -> izq
         x = Pantalla.ALTO + texture.getRegionX();
-        //POSICION_X = 0;
 
         // Posición Y
-        //POSICION_Y = Screen.SCREEN_HEIGH - textureRegion.getRegionY();
         y = 0;
 
         // Empieza yendo hacia la izquierda
         yendoDerecha = false;
+
+        hitBox = new Rectangle((int) x, (int) (alto / 2), (int) Math.floor(ancho * 0.2), (int) Math.floor(ancho * 0.2));
     }
 
     @Override
     public void actualiza(float delta) {
+        if (direccion == Direccion.PESCADO) {
+            y = Mundo.anzuelo.y;
+            return;
+        }
+
         if (yendoDerecha) {
             x += VELOCIDAD * delta;
-
-//            System.out.println("\nPOSICION X: " + posicionX);
-//            System.out.println("screen width : " + Mundo.ALTO);
-//            System.out.println("medida ancho : " + medidaAncho);
+            hitBox.x = (int) x;
 
             if ((x) >= (Pantalla.ALTO + Math.abs(ancho))) {
                 yendoDerecha = !yendoDerecha;
@@ -47,6 +52,8 @@ public class Pez extends Personaje {
 
         } else {
             x -= VELOCIDAD * delta;
+            hitBox.x = (int) x;
+
 
             if ((x + texture.getRegionWidth()) <= 0) {
                 yendoDerecha = !yendoDerecha;
@@ -54,9 +61,14 @@ public class Pez extends Personaje {
             }
 
         }
+
+
     }
 
     @Override
-    public void dibuja(SpriteBatch sb, ShapeRenderer sr) {sb.draw(texture, x, y, ancho, alto);}
+    public void dibuja(SpriteBatch sb, ShapeRenderer sr) {
+        sb.draw(texture, x, y, ancho, alto);
+        sr.rect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
+    }
 
 }

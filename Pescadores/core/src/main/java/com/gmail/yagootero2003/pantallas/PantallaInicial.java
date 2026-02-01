@@ -19,6 +19,7 @@ public class PantallaInicial extends Pantalla implements InputProcessor {
         this.game = game;
 
         Gdx.input.setInputProcessor(this);
+
     }
 
     @Override
