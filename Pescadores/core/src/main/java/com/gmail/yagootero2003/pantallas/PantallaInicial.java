@@ -11,7 +11,8 @@ import com.gmail.yagootero2003.Assets;
 import com.gmail.yagootero2003.Game;
 
 public class PantallaInicial extends Pantalla implements InputProcessor {
-    Game game;
+    private Game game;
+
     public PantallaInicial(Game game) {
         sb = new SpriteBatch();
         sr = new ShapeRenderer();
