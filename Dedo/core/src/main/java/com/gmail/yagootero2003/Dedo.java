@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Dedo {
     public Estado estado;
     private Texture imagen;
-    private int ancho, alto;
+    protected int ancho, alto;
 
-    private float x, y;
+    protected float x, y;
 
     public Dedo(Texture imagen) {
         this.imagen = imagen;

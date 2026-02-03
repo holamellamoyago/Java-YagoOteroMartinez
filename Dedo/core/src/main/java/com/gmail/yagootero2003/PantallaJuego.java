@@ -7,13 +7,11 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class PantallaJuego extends InputAdapter implements Screen {
@@ -22,13 +20,14 @@ public class PantallaJuego extends InputAdapter implements Screen {
 
     private OrthographicCamera camara;
 
-    private Dedo dedo;
+    protected Dedo dedo;
 
-    private Game juego;
+    protected Game juego;
 
-    private float delta, stateTime, stateTimeProximoPez;
+    protected float delta, stateTime, stateTimeProximoPez;
 
-    private List<Numero> numeros;
+    public Array<Numero> numeros;
+    protected Array<Bala> balas;
 
 
     public PantallaJuego(Main main) {
@@ -41,7 +40,8 @@ public class PantallaJuego extends InputAdapter implements Screen {
         delta = Gdx.graphics.getDeltaTime();
         dedo = new Dedo(Assets.dedo);
         stateTime = 0;
-        numeros = new ArrayList<>();
+        numeros = new Array<>();
+        balas = new Array<>();
 
     }
 
@@ -65,9 +65,20 @@ public class PantallaJuego extends InputAdapter implements Screen {
             num.actualiza(sb, delta);
         }
 
+        // Primero movemos posicion, después comprobamos
+
+        for (Bala bala : balas) {
+            bala.actualiza(sb, delta);
+            comprobarColisiones(bala);
+        }
+
+        // Dibujar
         dedo.dibujar(sb, sr);
         for (Numero num : numeros) {
             num.dibuja(sb, sr, delta);
+        }
+        for (Bala bala : balas) {
+            bala.dibuja(sb, sr, delta);
         }
 
         sb.end();
@@ -78,7 +89,6 @@ public class PantallaJuego extends InputAdapter implements Screen {
         @SuppressWarnings("NewApi") float x = new Random().nextFloat(Pantalla.STATE_MAXIMO) + Pantalla.STATE_MINIMO;
         stateTimeProximoPez += x;
 
-        System.out.println("Se genera número");
         numeros.add(new Numero());
 
 
@@ -128,6 +138,10 @@ public class PantallaJuego extends InputAdapter implements Screen {
                 dedo.estado = Estado.BAJANDO;
             }
             break;
+
+            case Input.Keys.SPACE: {
+                lanzarBala();
+            }
         }
 
         return true;
@@ -155,5 +169,29 @@ public class PantallaJuego extends InputAdapter implements Screen {
         }
 
         return false;
+    }
+
+    private void lanzarBala() {
+        balas.add(new Bala(this));
+    }
+
+    private void comprobarColisiones(Bala bala) {
+        for (Numero numero : numeros) {
+            if (numero.hitBox.contains(dedo.x, dedo.y)) abrirPantallaFinal(MotivoPerdida.BALA_TOCO_MANO);
+
+
+                if (numero.hitBox.contains(bala.x, bala.y)) {
+
+                    // Quito una vida al número , si queda a 0 devuelve true y se elimina
+                    if (numero.quitarVida(bala)) numeros.removeValue(numero, true);
+
+                    // Elimino la bala
+                    balas.removeValue(bala, true);
+                }
+        }
+    }
+
+    private void abrirPantallaFinal(MotivoPerdida motivoPerdida) {
+        juego.setScreen(new PantallaResultado(juego, motivoPerdida));
     }
 }

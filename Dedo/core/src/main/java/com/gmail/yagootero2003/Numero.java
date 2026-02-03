@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 import javax.sound.sampled.Line;
@@ -13,29 +16,46 @@ public class Numero extends Objeto {
     private int numero;
     public BitmapFont fuente;
 
+    private ArrayList<Bala> balasPasadas = new ArrayList<>();
+
+    protected Rectangle hitBox;
+
 
     public Numero() {
         this.numero = new Random().nextInt(Pantalla.NUM_MAXIMO) + Pantalla.NUM_MINIMO;
         this.fuente = new BitmapFont();
-        fuente.getData().setScale(1.5f);
+        fuente.getData().setScale(1f);
         fuente.setColor(Color.RED);
+
 
         super.ancho = (int) Math.ceil(Pantalla.ANCHO * 0.05); // cuadrado
         super.alto = (int) Math.ceil(Pantalla.ANCHO * 0.05); // cuadrado
         super.x = Pantalla.ANCHO + ancho;
         super.y = 200;
+
+        hitBox = new Rectangle((int) x,(int) y,ancho,alto);
+
     }
 
     @Override
     public void actualiza(SpriteBatch sb, float deltaTime) {
         super.x -= deltaTime * Pantalla.VELOCIDAD;
+        hitBox.x = (int) super.x;
     }
 
     @Override
     public void dibuja(SpriteBatch sb, ShapeRenderer sr, float deltaTime) {
-        fuente.draw(sb, String.valueOf(numero), x, y);
+        fuente.draw(sb, String.valueOf(numero), (int) hitBox.getCenterX(), (int) hitBox.getCenterY());
         sr.rect(x, y, ancho, alto);
-
-
     }
+
+    public boolean quitarVida(Bala bala) {
+        if (balasPasadas.contains(bala)) return false;
+
+        numero--;
+        if (numero <= 0) return true;
+        return false;
+    }
+
+
 }
