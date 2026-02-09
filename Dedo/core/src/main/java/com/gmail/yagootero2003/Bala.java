@@ -27,16 +27,4 @@ public class Bala extends Objeto {
     public void dibuja(SpriteBatch sb, ShapeRenderer sr, float deltaTime) {
         sr.circle(x,y,Pantalla.RADIO_BALA);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Bala bala = (Bala) o;
-        return Objects.equals(hitBox, bala.hitBox);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(hitBox);
-    }
 }

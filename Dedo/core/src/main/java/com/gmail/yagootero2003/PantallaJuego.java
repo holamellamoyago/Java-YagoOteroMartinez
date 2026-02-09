@@ -14,34 +14,27 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.Random;
 
-public class PantallaJuego extends InputAdapter implements Screen {
-    private SpriteBatch sb;
-    private ShapeRenderer sr;
-
-    private OrthographicCamera camara;
+public class PantallaJuego extends Pantalla {
 
     protected Dedo dedo;
-
-    protected Game juego;
 
     protected float delta, stateTime, stateTimeProximoPez;
 
     public Array<Numero> numeros;
     protected Array<Bala> balas;
 
+    private int vidasRestantes;
+
 
     public PantallaJuego(Main main) {
+        super(main);
         Assets.cargarTexturas();
 
-        this.juego = main;
-        sr = new ShapeRenderer();
-        sb = new SpriteBatch();
-        camara = new OrthographicCamera();
-        delta = Gdx.graphics.getDeltaTime();
         dedo = new Dedo(Assets.dedo);
         stateTime = 0;
         numeros = new Array<>();
         balas = new Array<>();
+        vidasRestantes = Pantalla.VIDAS_INICIALES;
 
     }
 
@@ -60,20 +53,21 @@ public class PantallaJuego extends InputAdapter implements Screen {
         stateTime += delta;
         if (stateTime > stateTimeProximoPez) generarNumero();
 
-        dedo.actualizar(sb, delta);
+        dedo.actualiza(sb, delta);
         for (Numero num : numeros) {
             num.actualiza(sb, delta);
         }
 
-        // Primero movemos posicion, después comprobamos
 
+        // Primero movemos posicion, después comprobamos
         for (Bala bala : balas) {
             bala.actualiza(sb, delta);
-            comprobarColisiones(bala);
+            comprobarColisionesBalas(bala);
         }
 
+
         // Dibujar
-        dedo.dibujar(sb, sr);
+        dedo.dibuja(sb, sr, delta);
         for (Numero num : numeros) {
             num.dibuja(sb, sr, delta);
         }
@@ -81,8 +75,30 @@ public class PantallaJuego extends InputAdapter implements Screen {
             bala.dibuja(sb, sr, delta);
         }
 
+        comprobarPosicionesNumeros();
+        mostrarInformacion(sb);
+
+
         sb.end();
         sr.end();
+    }
+
+    private void comprobarPosicionesNumeros() {
+        for (Numero n : numeros) {
+            if (dedo.hitBox.contains(n.x, n.y)) abrirPantallaFinal(MotivoPerdida.BALA_TOCO_MANO);
+
+            // Comprobación si el número llega al final de su recorrido
+            if (n.x <= 0) {
+                numeros.removeValue(n, true);
+                vidasRestantes--;
+            }
+            if (vidasRestantes == 0) abrirPantallaFinal(MotivoPerdida.NO_MAS_VIDAS);
+
+        }
+
+
+
+
     }
 
     private void generarNumero() {
@@ -94,34 +110,6 @@ public class PantallaJuego extends InputAdapter implements Screen {
 
     }
 
-    @Override
-    public void resize(int width, int height) {
-        camara.setToOrtho(false, Pantalla.ANCHO, Pantalla.ALTO);
-        camara.update();
-        sb.setProjectionMatrix(camara.combined); // SpriteBatch
-        sr.setProjectionMatrix(camara.combined);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        sr.dispose();
-        sb.dispose();
-    }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -175,23 +163,27 @@ public class PantallaJuego extends InputAdapter implements Screen {
         balas.add(new Bala(this));
     }
 
-    private void comprobarColisiones(Bala bala) {
+    private void comprobarColisionesBalas(Bala bala) {
         for (Numero numero : numeros) {
-            if (numero.hitBox.contains(dedo.x, dedo.y)) abrirPantallaFinal(MotivoPerdida.BALA_TOCO_MANO);
+            //if (numero.hitBox.contains(dedo.ancho, dedo.y)) abrirPantallaFinal(MotivoPerdida.BALA_TOCO_MANO);
 
 
-                if (numero.hitBox.contains(bala.x, bala.y)) {
+            if (numero.hitBox.contains(bala.x, bala.y)) {
 
-                    // Quito una vida al número , si queda a 0 devuelve true y se elimina
-                    if (numero.quitarVida(bala)) numeros.removeValue(numero, true);
+                // Quito una vida al número , si queda a 0 devuelve true y se elimina
+                if (numero.quitarVida(bala)) numeros.removeValue(numero, true);
 
-                    // Elimino la bala
-                    balas.removeValue(bala, true);
-                }
+                // Elimino la bala
+                //balas.removeValue(bala, true);
+            }
         }
     }
 
     private void abrirPantallaFinal(MotivoPerdida motivoPerdida) {
-        juego.setScreen(new PantallaResultado(juego, motivoPerdida));
+        super.game.setScreen(new PantallaResultado(super.game, motivoPerdida));
+    }
+
+    private void mostrarInformacion(SpriteBatch sb) {
+        Assets.fuente.draw(sb, "Te quedan " + vidasRestantes + " vidas y J balas restantes", Pantalla.ANCHO * 0.05f, (Pantalla.ALTO * 0.1f));
     }
 }
