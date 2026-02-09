@@ -37,7 +37,10 @@ public class Assets {
 		anzuelo = atlas.findRegion("anzuelo");
 		sedal = atlas.findRegion("punto");
 
+		
 		pezAzul=atlas.findRegion("pezAzul");
+
+		
 
 
 	}
