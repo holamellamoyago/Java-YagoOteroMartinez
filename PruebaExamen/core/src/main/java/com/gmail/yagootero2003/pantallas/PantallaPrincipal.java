@@ -14,7 +14,7 @@ import com.gmail.yagootero2003.Jugador;
 public class PantallaPrincipal extends Pantalla {
     private Array<Enemigo> enemigos = new Array<>();
     private Jugador jugador;
-    float tiempoEntreTiempos = 10;
+    float tiempoEntreTiempos = 5;
     float tiempoTotal = 0;
 
     public PantallaPrincipal(Game pantalla) {
@@ -60,11 +60,13 @@ public class PantallaPrincipal extends Pantalla {
     }
 
     private void comprobarcolisiones(Enemigo e) {
-        if (e.hitBox.contains(jugador.hitBox)) {
+        if (e.hitBox.contains(jugador.hitBox.x, jugador.hitBox.y)) {
+            game.setScreen(new PantallaFinal(game));
 
         }
 
-        if (jugador.hitBox.contains(e.hitBox))game.setScreen(new PantallaFinal(game));
+        if (jugador.hitBox.contains(e.hitBox.x, e.hitBox.y))
+            game.setScreen(new PantallaFinal(game));
 
     }
 
@@ -72,12 +74,12 @@ public class PantallaPrincipal extends Pantalla {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.W: {
-                Jugador.direccion = DireccionEnemigo.ARRIBA;
+                Jugador.direccion = DireccionEnemigo.ABAJO;
             }
             break;
 
             case Input.Keys.S: {
-                Jugador.direccion = DireccionEnemigo.ABAJO;
+                Jugador.direccion = DireccionEnemigo.ARRIBA;
             }
             break;
 

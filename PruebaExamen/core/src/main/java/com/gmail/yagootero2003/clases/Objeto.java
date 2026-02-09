@@ -2,12 +2,12 @@ package com.gmail.yagootero2003.clases;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
-import java.awt.Rectangle;
 
 public abstract class Objeto {
     protected float x, y;
-    protected int ancho, alto;
+    protected float ancho, alto;
 
     public Rectangle hitBox;
 

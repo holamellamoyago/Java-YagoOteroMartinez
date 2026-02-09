@@ -2,11 +2,11 @@ package com.gmail.yagootero2003;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.gmail.yagootero2003.clases.Config;
 import com.gmail.yagootero2003.clases.Objeto;
 import com.gmail.yagootero2003.pantallas.Pantalla;
 
-import java.awt.Rectangle;
 import java.util.Random;
 
 public class Enemigo extends Objeto {
@@ -32,7 +32,7 @@ public class Enemigo extends Objeto {
         y = new Random().nextFloat(Pantalla.ALTO - alto);
 
 
-        hitBox = new Rectangle((int) x, (int) y, ancho, alto);
+        hitBox = new Rectangle( x,  y, ancho, alto);
     }
 
     @Override

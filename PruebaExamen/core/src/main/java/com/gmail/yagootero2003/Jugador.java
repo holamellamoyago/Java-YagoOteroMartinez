@@ -2,11 +2,11 @@ package com.gmail.yagootero2003;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.gmail.yagootero2003.clases.Config;
 import com.gmail.yagootero2003.clases.Objeto;
 import com.gmail.yagootero2003.pantallas.Pantalla;
 
-import java.awt.Rectangle;
 
 public class Jugador extends Objeto {
     public static DireccionEnemigo direccion;
@@ -24,7 +24,7 @@ public class Jugador extends Objeto {
         x = Pantalla.ANCHO / 2 - ancho;
         y = Pantalla.ALTO / 2 - alto;
 
-        hitBox = new Rectangle((int) x, (int) y, ancho, alto);
+        hitBox = new Rectangle(x, y, ancho, alto);
     }
 
     @Override
@@ -41,10 +41,10 @@ public class Jugador extends Objeto {
             break;
         }
 
-        alto += 1;
-        ancho += 1;
+        alto += deltaTime * 5f; // Ajusta el factor de crecimiento
+        ancho = alto;
 
-        hitBox = new Rectangle((int) x, (int) y, ancho, alto);
+        hitBox = new Rectangle(x, y, ancho, alto);
     }
 
     @Override
